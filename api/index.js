@@ -31,19 +31,30 @@ app.get('/api', (req, res) => {
   res.json({ message: 'Translation API is working!' });
 });
 
-// Translation route
 app.post('/api/translate', (req, res) => {
   try {
+    console.log('=== Translation Request ===');
+    console.log('Headers:', req.headers);
+    console.log('Body:', req.body);
+    console.log('Raw body type:', typeof req.body);
+    
     const { text, targetLanguage } = req.body;
     
+    console.log('Extracted text:', text);
+    console.log('Extracted targetLanguage:', targetLanguage);
+    
     if (!text || !targetLanguage) {
+      console.log('Missing required fields!');
       return res.status(400).json({ 
-        error: 'Missing text or targetLanguage' 
+        error: 'Missing text or targetLanguage',
+        received: { text, targetLanguage },
+        bodyKeys: Object.keys(req.body || {})
       });
     }
     
-    // Your translation logic here
     const translatedText = `Translated "${text}" to ${targetLanguage}`;
+    
+    console.log('Sending response:', { translatedText });
     
     res.json({
       translatedText,
