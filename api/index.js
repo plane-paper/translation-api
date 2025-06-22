@@ -87,7 +87,8 @@ app.post('/api/translate', async (req, res) => {
         }
       ],
       temperature: 0.3,
-      max_tokens: 150,
+      max_tokens: 2048,
+        top_p: 1
     });
 
     console.log('OpenAI response:', completion.choices[0]);
