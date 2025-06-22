@@ -33,33 +33,23 @@ app.get('/api', (req, res) => {
 
 app.post('/api/translate', (req, res) => {
   try {
-    console.log('=== Translation Request ===');
-    console.log('Headers:', req.headers);
-    console.log('Body:', req.body);
-    console.log('Raw body type:', typeof req.body);
+    const { text, fromLang, toLang } = req.body;  // Changed to match React
     
-    const { text, targetLanguage } = req.body;
-    
-    console.log('Extracted text:', text);
-    console.log('Extracted targetLanguage:', targetLanguage);
-    
-    if (!text || !targetLanguage) {
-      console.log('Missing required fields!');
+    if (!text || !toLang) {
       return res.status(400).json({ 
-        error: 'Missing text or targetLanguage',
-        received: { text, targetLanguage },
-        bodyKeys: Object.keys(req.body || {})
+        error: 'Missing text or toLang',
+        received: { text, fromLang, toLang }
       });
     }
     
-    const translatedText = `Translated "${text}" to ${targetLanguage}`;
-    
-    console.log('Sending response:', { translatedText });
+    // Your translation logic here
+    const translatedText = `Translated "${text}" from ${fromLang || 'auto'} to ${toLang}`;
     
     res.json({
-      translatedText,
+      translation: translatedText,  // Changed to match React expectation
       originalText: text,
-      targetLanguage,
+      fromLang,
+      toLang,
       success: true
     });
     
