@@ -7,7 +7,7 @@ const app = express();
 // CORS configuration
 const corsOptions = {
   origin: [
-    'https://goblinator-nine.vercel.app',
+    'https://goblinator-nine-dusky.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
     'http://localhost:5173'
