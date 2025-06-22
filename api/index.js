@@ -58,25 +58,28 @@ app.post('/api/translate', async (req, res) => {
     // Create the translation prompt
     const prompt = `Translate the following text from "${req.body.fromLang || 'auto-detect'}" to "${targetLanguage}". 
     
-Text to translate: "${text}"
+Text to translate: "${text}"`;
 
-Important: Only return the translated text, nothing else. No explanations, no quotes, just the direct translation.`;
+    const systemMessage = fromLang === "Brainrot" 
+        ? "You are a brainrot to English translator. You should translate the phrase into plain English."
+        : "You are an English to brainrot translator. You should translate the phrase into brainrot slang.";
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "ft:gpt-4.1-nano-2025-04-14:personal:brainrot-translate:Bl8MOsFc",
       messages: [
         {
           role: "system",
-          content: "You are a professional translator. Translate text accurately while preserving the original meaning and tone."
+          content: systemMessage
         },
         {
           role: "user",
           content: prompt
         }
       ],
-      max_tokens: 1000,
-      temperature: 0.3
+      temperature: 0,
+      max_tokens: 150,
+      store: false,
     });
 
     const translatedText = completion.choices[0].message.content.trim();
